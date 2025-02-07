@@ -51,8 +51,10 @@ void TrayController::HandleTrayMessage(LPARAM lParam) {
     if (lParam == WM_RBUTTONUP) {
         m_view.ShowContextMenu(m_model.GetStats());
     }
+    else if (lParam == WM_LBUTTONDBLCLK) {
+        m_model.OpenBin();
+    }
 }
-
 void TrayController::UpdateView() {
     m_view.UpdateIcon(m_model.GetStats());
 }

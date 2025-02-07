@@ -2,6 +2,8 @@
 #include "controllers/TrayController.h"
 #include "resource.h"
 
+#define TIMER_ID 1
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     static TrayController* controller = nullptr;
     
@@ -22,8 +24,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             if (controller) controller->HandleCommand(wParam);
             break;
             
+        case WM_TIMER:
+            if (wParam == TIMER_ID && controller) {
+                controller->UpdateView();
+            }
+            break;
+            
         case WM_DESTROY:
-            delete controller;
+            if (controller) {
+                KillTimer(hwnd, TIMER_ID);
+                delete controller;
+            }
             PostQuitMessage(0);
             break;
             

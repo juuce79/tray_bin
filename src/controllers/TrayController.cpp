@@ -1,13 +1,31 @@
 #include "TrayController.h"
 #include <windows.h>
+#include <shlobj.h>
 
 #define ID_TRAY_EXIT 1002
 #define ID_TRAY_EMPTY 1003
 #define ID_TRAY_OPEN 1005
 
+#define TIMER_ID 1
+#define UPDATE_INTERVAL 1000
+
 TrayController::TrayController(HWND hwnd) : m_view(hwnd) {
     m_view.Initialize();
     UpdateView();
+    
+    // Set up timer for periodic updates
+    SetTimer(hwnd, TIMER_ID, UPDATE_INTERVAL, NULL);
+    
+    // Register for shell change notifications
+    SHChangeNotifyEntry shCne;
+    shCne.pidl = NULL;
+    shCne.fRecursive = TRUE;
+    
+    SHChangeNotifyRegister(hwnd, 
+        SHCNRF_InterruptLevel | SHCNRF_ShellLevel,
+        SHCNE_ALLEVENTS,
+        WM_APP + 2,
+        1, &shCne);
 }
 
 void TrayController::HandleCommand(WPARAM wParam) {
@@ -16,10 +34,7 @@ void TrayController::HandleCommand(WPARAM wParam) {
             m_model.OpenBin();
             break;
         case ID_TRAY_EMPTY:
-            if (m_model.EmptyBin()) {
-                MessageBox(NULL, L"Recycle Bin Emptied Successfully", 
-                    L"Recycle Bin", MB_OK | MB_ICONINFORMATION);
-            } else {
+            if (!m_model.EmptyBin()) {
                 MessageBox(NULL, L"Failed to Empty Recycle Bin", 
                     L"Error", MB_OK | MB_ICONERROR);
             }

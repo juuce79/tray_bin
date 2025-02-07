@@ -15,8 +15,7 @@ RecycleBinStats RecycleBinModel::GetStats() {
 }
 
 bool RecycleBinModel::EmptyBin() {
-    return SUCCEEDED(SHEmptyRecycleBin(NULL, NULL, 
-        SHERB_NOCONFIRMATION | SHERB_NOPROGRESSUI | SHERB_NOSOUND));
+    return SUCCEEDED(SHEmptyRecycleBin(NULL, NULL, SHERB_NOPROGRESSUI | SHERB_NOSOUND));
 }
 
 bool RecycleBinModel::OpenBin() {

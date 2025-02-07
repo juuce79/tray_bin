@@ -1,0 +1,4 @@
+#include "resource.h"
+
+IDI_EMPTY_ICON ICON "recycle_bin_empty.ico"
+IDI_FULL_ICON  ICON "recycle_bin_full.ico"

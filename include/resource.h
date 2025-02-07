@@ -1,0 +1,2 @@
+#define IDI_EMPTY_ICON 101
+#define IDI_FULL_ICON  102

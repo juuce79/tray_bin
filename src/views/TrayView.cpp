@@ -8,9 +8,14 @@
 #define ID_TRAY_EMPTY 1003
 #define ID_TRAY_STATS 1004
 #define ID_TRAY_OPEN 1005
+#define ID_TRAY_AUTOSTART 1006
 
-TrayView::TrayView(HWND hwnd) : m_hwnd(hwnd) {
+TrayView::TrayView(HWND hwnd, RecycleBinModel* model) : m_hwnd(hwnd), m_model(model) {
     memset(&m_nid, 0, sizeof(m_nid));
+}
+
+bool TrayView::IsAutoStartEnabled() const {
+    return m_model->IsAutoStartEnabled();
 }
 
 void TrayView::Initialize() {
@@ -54,7 +59,11 @@ void TrayView::ShowContextMenu(const RecycleBinStats& stats) {
     InsertMenu(hMenu, 3, MF_BYPOSITION | MF_STRING | 
         (stats.isEmpty ? MF_GRAYED : MF_ENABLED), ID_TRAY_EMPTY, L"Empty Recycle Bin");
     InsertMenu(hMenu, 4, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
-    InsertMenu(hMenu, 5, MF_BYPOSITION | MF_STRING, ID_TRAY_EXIT, L"Exit");
+    bool isAutoStartEnabled = IsAutoStartEnabled();
+    InsertMenu(hMenu, 5, MF_BYPOSITION | MF_STRING | (isAutoStartEnabled ? MF_CHECKED : MF_UNCHECKED),
+        ID_TRAY_AUTOSTART, L"Start with Windows");
+    InsertMenu(hMenu, 6, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
+    InsertMenu(hMenu, 7, MF_BYPOSITION | MF_STRING, ID_TRAY_EXIT, L"Exit");
     
     SetForegroundWindow(m_hwnd);
     TrackPopupMenu(hMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, 0, m_hwnd, NULL);

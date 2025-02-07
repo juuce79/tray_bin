@@ -5,11 +5,12 @@
 #define ID_TRAY_EXIT 1002
 #define ID_TRAY_EMPTY 1003
 #define ID_TRAY_OPEN 1005
+#define ID_TRAY_AUTOSTART 1006
 
 #define TIMER_ID 1
 #define UPDATE_INTERVAL 1000
 
-TrayController::TrayController(HWND hwnd) : m_view(hwnd) {
+TrayController::TrayController(HWND hwnd) : m_model(), m_view(hwnd, &m_model) {
     m_view.Initialize();
     UpdateView();
     
@@ -44,6 +45,11 @@ void TrayController::HandleCommand(WPARAM wParam) {
             m_view.Cleanup();
             PostQuitMessage(0);
             break;
+        case ID_TRAY_AUTOSTART:
+            if (m_model.ToggleAutoStart()) {
+                UpdateView();
+            }
+            break;
     }
 }
 
@@ -55,6 +61,7 @@ void TrayController::HandleTrayMessage(LPARAM lParam) {
         m_model.OpenBin();
     }
 }
+
 void TrayController::UpdateView() {
     m_view.UpdateIcon(m_model.GetStats());
 }

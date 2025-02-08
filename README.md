@@ -10,3 +10,7 @@ To install Tray Bin:
 - Run the program by double clicking the file.
 - The Tray Bin icon should now appear in your system tray.
 - **Optional:** Click the **Start with Windows** option in the Tray Bin menu to automatically start Tray Bin when you start you device.
+
+## License
+
+This is free and unencumbered software released into the public domain. See the [UNLICENSE](UNLICENSE) file for details.

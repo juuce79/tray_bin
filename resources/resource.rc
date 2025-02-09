@@ -1,4 +1,6 @@
 #include "resource.h"
 
-IDI_EMPTY_ICON ICON "recycle_bin_empty_512.ico"
-IDI_FULL_ICON  ICON "recycle_bin_full_512.ico"
+IDI_EMPTY_ICON_DARK ICON "recycle_bin_empty_dark.ico"
+IDI_FULL_ICON_DARK  ICON "recycle_bin_full_dark.ico"
+IDI_EMPTY_ICON_LIGHT ICON "recycle_bin_empty_light.ico"
+IDI_FULL_ICON_LIGHT  ICON "recycle_bin_full_light.ico"

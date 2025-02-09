@@ -14,6 +14,33 @@ RecycleBinStats RecycleBinModel::GetStats() {
     return stats;
 }
 
+IconTheme RecycleBinModel::GetIconTheme() const {
+    HKEY hKey;
+    DWORD value;
+    DWORD size = sizeof(value);
+    
+    if (RegOpenKeyEx(HKEY_CURRENT_USER, L"Software\\RecycleBinTray", 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
+        if (RegQueryValueEx(hKey, L"Theme", NULL, NULL, (LPBYTE)&value, &size) == ERROR_SUCCESS) {
+            RegCloseKey(hKey);
+            return value == 0 ? IconTheme::Light : IconTheme::Dark;
+        }
+        RegCloseKey(hKey);
+    }
+    return m_iconTheme;
+}
+
+void RecycleBinModel::SetIconTheme(IconTheme theme) {
+    m_iconTheme = theme;
+    
+    HKEY hKey;
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\RecycleBinTray", 0, NULL, 
+        REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL) == ERROR_SUCCESS) {
+        DWORD value = theme == IconTheme::Light ? 0 : 1;
+        RegSetValueEx(hKey, L"Theme", 0, REG_DWORD, (LPBYTE)&value, sizeof(value));
+        RegCloseKey(hKey);
+    }
+}
+
 bool RecycleBinModel::EmptyBin() {
     return SUCCEEDED(SHEmptyRecycleBin(NULL, NULL, SHERB_NOPROGRESSUI | SHERB_NOSOUND));
 }

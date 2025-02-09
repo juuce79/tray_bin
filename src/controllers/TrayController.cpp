@@ -2,10 +2,15 @@
 #include <windows.h>
 #include <shlobj.h>
 
+#define ID_TRAY_APP_ICON 1001
 #define ID_TRAY_EXIT 1002
 #define ID_TRAY_EMPTY 1003
+#define ID_TRAY_STATS 1004
 #define ID_TRAY_OPEN 1005
 #define ID_TRAY_AUTOSTART 1006
+#define ID_TRAY_THEME_DARK 1007
+#define ID_TRAY_THEME_LIGHT 1008
+#define ID_TRAY_THEME_SYSTEM 1009
 
 #define TIMER_ID 1
 #define UPDATE_INTERVAL 1000
@@ -49,6 +54,18 @@ void TrayController::HandleCommand(WPARAM wParam) {
             if (m_model.ToggleAutoStart()) {
                 UpdateView();
             }
+            break;
+        case ID_TRAY_THEME_DARK:
+            m_model.SetIconTheme(IconTheme::Dark);
+            UpdateView();
+            break;
+        case ID_TRAY_THEME_LIGHT:
+            m_model.SetIconTheme(IconTheme::Light);
+            UpdateView();
+            break;
+        case ID_TRAY_THEME_SYSTEM:
+            m_model.SetIconTheme(IconTheme::System);
+            UpdateView();
             break;
     }
 }

@@ -9,6 +9,9 @@
 #define ID_TRAY_STATS 1004
 #define ID_TRAY_OPEN 1005
 #define ID_TRAY_AUTOSTART 1006
+#define ID_TRAY_THEME_DARK 1007
+#define ID_TRAY_THEME_LIGHT 1008
+#define ID_TRAY_THEME_SYSTEM 1009
 
 TrayView::TrayView(HWND hwnd, RecycleBinModel* model) : m_hwnd(hwnd), m_model(model) {
     memset(&m_nid, 0, sizeof(m_nid));
@@ -24,14 +27,21 @@ void TrayView::Initialize() {
     m_nid.uID = ID_TRAY_APP_ICON;
     m_nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
     m_nid.uCallbackMessage = WM_APP + 1;
-    m_nid.hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_EMPTY_ICON));
+    bool isDark = m_model->GetIconTheme() == IconTheme::Dark;
+    m_nid.hIcon = LoadIcon(GetModuleHandle(NULL), 
+        MAKEINTRESOURCE(isDark ? IDI_EMPTY_ICON_DARK : IDI_EMPTY_ICON_LIGHT));
     
     Shell_NotifyIcon(NIM_ADD, &m_nid);
 }
 
 void TrayView::UpdateIcon(const RecycleBinStats& stats) {
-    HICON newIcon = LoadIcon(GetModuleHandle(NULL), 
-        MAKEINTRESOURCE(stats.isEmpty ? IDI_EMPTY_ICON : IDI_FULL_ICON));
+    bool isDark = m_model->GetIconTheme() == IconTheme::Dark;
+    
+    int iconResource = stats.isEmpty ? 
+        (isDark ? IDI_EMPTY_ICON_DARK : IDI_EMPTY_ICON_LIGHT) :
+        (isDark ? IDI_FULL_ICON_DARK : IDI_FULL_ICON_LIGHT);
+    
+    HICON newIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(iconResource));
     
     if (newIcon) {
         m_nid.hIcon = newIcon;
@@ -63,7 +73,14 @@ void TrayView::ShowContextMenu(const RecycleBinStats& stats) {
     InsertMenu(hMenu, 5, MF_BYPOSITION | MF_STRING | (isAutoStartEnabled ? MF_CHECKED : MF_UNCHECKED),
         ID_TRAY_AUTOSTART, L"Start with Windows");
     InsertMenu(hMenu, 6, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
-    InsertMenu(hMenu, 7, MF_BYPOSITION | MF_STRING, ID_TRAY_EXIT, L"Exit");
+    InsertMenu(hMenu, 7, MF_BYPOSITION | MF_STRING | 
+        (m_model->GetIconTheme() == IconTheme::Dark ? MF_CHECKED : MF_UNCHECKED),
+        ID_TRAY_THEME_DARK, L"Light Bin");
+    InsertMenu(hMenu, 8, MF_BYPOSITION | MF_STRING |
+        (m_model->GetIconTheme() == IconTheme::Light ? MF_CHECKED : MF_UNCHECKED),
+        ID_TRAY_THEME_LIGHT, L"Dark Bin");
+    InsertMenu(hMenu, 9, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
+    InsertMenu(hMenu, 10, MF_BYPOSITION | MF_STRING, ID_TRAY_EXIT, L"Exit");
     
     SetForegroundWindow(m_hwnd);
     TrackPopupMenu(hMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON, pt.x, pt.y, 0, m_hwnd, NULL);

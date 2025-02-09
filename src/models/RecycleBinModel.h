@@ -8,13 +8,22 @@ struct RecycleBinStats {
     bool isEmpty;
 };
 
+enum class IconTheme {
+    Dark,
+    Light
+};
+
 class RecycleBinModel {
-public:
-    RecycleBinStats GetStats();
-    bool EmptyBin();
-    bool OpenBin();
-    bool IsAutoStartEnabled();
-    bool ToggleAutoStart();
-private:
-    void NotifyObservers(); // For future observer pattern implementation
+    public:
+        RecycleBinStats GetStats();
+        IconTheme GetIconTheme() const;
+        void SetIconTheme(IconTheme theme);
+        bool EmptyBin();
+        bool OpenBin();
+        bool IsAutoStartEnabled();
+        bool ToggleAutoStart();        
+        bool IsSystemInDarkMode() const;
+    private:
+        IconTheme m_iconTheme = IconTheme::Dark;
+        void NotifyObservers();
 };

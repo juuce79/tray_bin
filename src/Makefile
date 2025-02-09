@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -std=c++17 -DUNICODE -D_UNICODE -I../include
 LDFLAGS = -static -mwindows -lshell32 -luser32
 
 BUILD_DIR = ../build
-SRCS = main.cpp \
+SRCS = Main.cpp \
        controllers/TrayController.cpp \
        models/RecycleBinModel.cpp \
        views/TrayView.cpp

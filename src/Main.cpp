@@ -47,11 +47,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
     WNDCLASSEX wc = {
         sizeof(WNDCLASSEX), 0, WndProc, 0, 0, hInstance,
-        LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_FULL_ICON)),
+        LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_FULL_ICON_LIGHT)), // Changed here
         LoadCursor(NULL, IDC_ARROW),
         (HBRUSH)(COLOR_WINDOW + 1), NULL,
         L"MyRecycleBinClass",
-        LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_FULL_ICON))
+        LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_FULL_ICON_LIGHT))  // And here
     };
 
     RegisterClassEx(&wc);

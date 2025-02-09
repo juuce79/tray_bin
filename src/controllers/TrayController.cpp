@@ -63,10 +63,6 @@ void TrayController::HandleCommand(WPARAM wParam) {
             m_model.SetIconTheme(IconTheme::Light);
             UpdateView();
             break;
-        case ID_TRAY_THEME_SYSTEM:
-            m_model.SetIconTheme(IconTheme::System);
-            UpdateView();
-            break;
     }
 }
 

@@ -1,6 +1,8 @@
 #include <windows.h>
+#include <gdiplus.h>
 #include "controllers/TrayController.h"
 #include "resource.h"
+#include "utils/IconLoader.h"
 
 #define TIMER_ID 1
 
@@ -45,20 +47,32 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    ULONG_PTR gdiplusToken;
+    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+    
     WNDCLASSEX wc = {
-        sizeof(WNDCLASSEX), 0, WndProc, 0, 0, hInstance,
-        LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_FULL_ICON_LIGHT)), // Changed here
+        sizeof(WNDCLASSEX), 
+        0, 
+        WndProc, 
+        0, 
+        0, 
+        hInstance,
+        LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_ICON)),
         LoadCursor(NULL, IDC_ARROW),
-        (HBRUSH)(COLOR_WINDOW + 1), NULL,
+        (HBRUSH)(COLOR_WINDOW + 1), 
+        NULL,
         L"MyRecycleBinClass",
-        LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_FULL_ICON_LIGHT))  // And here
+        LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_ICON))
     };
 
     RegisterClassEx(&wc);
     
     HWND hwnd = CreateWindowEx(0, L"MyRecycleBinClass", 
         L"Recycle Bin Tray", 0, 0, 0, 0, 0, NULL, NULL, hInstance, NULL);
+    
     if (hwnd == NULL) {
+        Gdiplus::GdiplusShutdown(gdiplusToken);
         return -1;
     }    
 
@@ -68,5 +82,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
         DispatchMessage(&msg);
     }
 
+    Gdiplus::GdiplusShutdown(gdiplusToken);
     return msg.wParam;
 }

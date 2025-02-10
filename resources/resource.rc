@@ -1,6 +1,30 @@
 #include "resource.h"
 
-IDI_EMPTY_ICON_DARK ICON "recycle_bin_empty_dark.ico"
-IDI_FULL_ICON_DARK  ICON "recycle_bin_full_dark.ico"
-IDI_EMPTY_ICON_LIGHT ICON "recycle_bin_empty_light.ico"
-IDI_FULL_ICON_LIGHT  ICON "recycle_bin_full_light.ico"
+// Application icon
+IDI_APP_ICON ICON "app.ico"
+
+// Dark theme icons
+IDI_BIN_DARK_0    PNG "tray_bin_dark_0.png"
+IDI_BIN_DARK_10   PNG "tray_bin_dark_10.png"
+IDI_BIN_DARK_20   PNG "tray_bin_dark_20.png"
+IDI_BIN_DARK_30   PNG "tray_bin_dark_30.png"
+IDI_BIN_DARK_40   PNG "tray_bin_dark_40.png"
+IDI_BIN_DARK_50   PNG "tray_bin_dark_50.png"
+IDI_BIN_DARK_60   PNG "tray_bin_dark_60.png"
+IDI_BIN_DARK_70   PNG "tray_bin_dark_70.png"
+IDI_BIN_DARK_80   PNG "tray_bin_dark_80.png"
+IDI_BIN_DARK_90   PNG "tray_bin_dark_90.png"
+IDI_BIN_DARK_100  PNG "tray_bin_dark_100.png"
+
+// Light theme icons
+IDI_BIN_LIGHT_0   PNG "tray_bin_light_0.png"
+IDI_BIN_LIGHT_10  PNG "tray_bin_light_10.png"
+IDI_BIN_LIGHT_20  PNG "tray_bin_light_20.png"
+IDI_BIN_LIGHT_30  PNG "tray_bin_light_30.png"
+IDI_BIN_LIGHT_40  PNG "tray_bin_light_40.png"
+IDI_BIN_LIGHT_50  PNG "tray_bin_light_50.png"
+IDI_BIN_LIGHT_60  PNG "tray_bin_light_60.png"
+IDI_BIN_LIGHT_70  PNG "tray_bin_light_70.png"
+IDI_BIN_LIGHT_80  PNG "tray_bin_light_80.png"
+IDI_BIN_LIGHT_90  PNG "tray_bin_light_90.png"
+IDI_BIN_LIGHT_100 PNG "tray_bin_light_100.png"

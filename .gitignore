@@ -1,4 +1,15 @@
-build/
+# Ignore build artifacts
+/build/
+/store_package/
+temp/*
+.vscode/
+
+# Ignore development certificate files
+DevCert.pfx
+DevCert.pvk
+DevCert.cer
+
+# Ignore executables
 *.exe
 *.obj
-temp/*
+*.msix
